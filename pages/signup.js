@@ -18,7 +18,7 @@ export default function Signup() {
 
     try {
       await signup(formData.email, formData.password);
-      router.push("/todos");
+      router.push("/todo");
       // successToast("Account created successfully!");
     } catch (error) {
       // console.log(error);

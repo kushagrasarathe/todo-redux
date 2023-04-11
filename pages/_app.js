@@ -3,7 +3,7 @@ import { AuthContextProvider } from "@/src/context/AuthContext";
 import "@/styles/globals.css";
 import { useRouter } from "next/router";
 
-const authReq = ["/todos"];
+const authReq = ["/todo"];
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();

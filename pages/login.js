@@ -18,7 +18,7 @@ export default function Login() {
 
     try {
       await login(formData.email, formData.password);
-      router.push("/todos");
+      router.push("/todo");
       // successToast("Login successfull!");
     } catch (error) {
       // console.log(error);
