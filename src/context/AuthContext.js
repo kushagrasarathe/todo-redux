@@ -2,8 +2,10 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
-import { auth } from "../config/firebaseConfig";
+import { auth } from "../utils/firebaseConfig";
+import { successToast } from "../utils/toast";
 const { createContext, useContext, useState, useEffect } = require("react");
 
 const AuthContext = createContext({});
@@ -30,7 +32,7 @@ export const AuthContextProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const signUp = (email, password) => {
+  const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
@@ -38,8 +40,14 @@ export const AuthContextProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  const logout = async () => {
+    setUser(null);
+    await signOut(auth);
+    // successToast("Logged out successfully!")
+  };
+
   return (
-    <AuthContext.Provider value={{ login, signUp, user }}>
+    <AuthContext.Provider value={{ login, signup, logout, user }}>
       {loading ? null : children}
     </AuthContext.Provider>
   );
