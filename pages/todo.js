@@ -30,6 +30,13 @@ export default function Todo() {
         ...doc.data(),
       }));
       setFetchData(data);
+      // data.map((todo) => {
+      //   // todo.userId === user.uid && setFetchData(data);
+      //   // console.log()
+      //   if (todo.userId === user.uid) {
+      //     setFetchData(data);
+      //   }
+      // });
     });
     return () => unsub();
   }, []);
@@ -70,11 +77,14 @@ export default function Todo() {
         </button>
       </div>
       <div>
-        {fetchData.map((item, idx) => (
-          <div key={idx}>
-            <span>{item.data}</span>
-          </div>
-        ))}
+        {fetchData.map(
+          (item, idx) =>
+            item.userId === user.uid && (
+              <div key={idx}>
+                <span>{item.data}</span>
+              </div>
+            )
+        )}
       </div>
     </div>
   );
