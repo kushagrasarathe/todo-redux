@@ -20,23 +20,18 @@ export default function Todo() {
     userId: "",
     isDone: false,
   });
-
+  const [loading, setLoading] = useState(true);
   const [fetchData, setFetchData] = useState([]);
 
   useEffect(() => {
     const unsub = onSnapshot(todoCollectionRef, (snapshot) => {
+      setLoading(true);
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       setFetchData(data);
-      // data.map((todo) => {
-      //   // todo.userId === user.uid && setFetchData(data);
-      //   // console.log()
-      //   if (todo.userId === user.uid) {
-      //     setFetchData(data);
-      //   }
-      // });
+      setLoading(false);
     });
     return () => unsub();
   }, []);
@@ -77,13 +72,17 @@ export default function Todo() {
         </button>
       </div>
       <div>
-        {fetchData.map(
-          (item, idx) =>
-            item.userId === user.uid && (
-              <div key={idx}>
-                <span>{item.data}</span>
-              </div>
-            )
+        {loading ? (
+          <span>loading...</span>
+        ) : (
+          fetchData.map(
+            (item, idx) =>
+              item.userId === user.uid && (
+                <div key={idx}>
+                  <span>{item.data}</span>
+                </div>
+              )
+          )
         )}
       </div>
     </div>
