@@ -8,12 +8,23 @@ import {
   getDocs,
   onSnapshot,
   query,
+  updateDoc,
 } from "@firebase/firestore";
 import { db } from "../src/utils/firebaseConfig";
+import store, {
+  addTodoAction,
+  decrement,
+  increment,
+  setUserDetails,
+} from "@/redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 const todoCollectionRef = collection(db, "todos");
 
-export default function Todo() {
+function Todo(props) {
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+
   const [todo, setTodo] = useState({
     data: "",
     createdAt: "",
@@ -38,7 +49,7 @@ export default function Todo() {
 
   const { logout, user } = useAuth();
 
-  const saveTodo = async () => {
+  const saveTodo = async (test) => {
     await addDoc(todoCollectionRef, {
       data: todo.data,
       createdAt: timestamp(),
@@ -47,8 +58,23 @@ export default function Todo() {
     });
   };
 
+  const temp = {
+    data: todo.data,
+    createdAt: timestamp(),
+    userId: user.uid,
+    isDone: false,
+  };
+
   return (
     <div>
+      {props.user.firstName}
+      <br />
+      <br />
+      <br />
+
+      <button onClick={() => props.setUserDetails(temp)}>log</button>
+      {/* <button onClick={() => dispatch(increment())}>plus</button>
+      <button onClick={() => dispatch(decrement())}>minus</button> */}
       <button onClick={logout}>Logout</button>
       <br />
       <br />
@@ -88,3 +114,16 @@ export default function Todo() {
     </div>
   );
 }
+
+function mapStateToProps(globalState) {
+  return {
+    user: globalState,
+  };
+}
+
+const mapDispatchToProps = {
+  setUserDetails: setUserDetails,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todo);
+// connect(mapStateToProps, mapDispatchToProps)
