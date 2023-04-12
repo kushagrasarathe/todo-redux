@@ -7,10 +7,16 @@ import { deleteTodo, markAsComplete, setTodoDetails } from "@/redux";
 import { connect, useDispatch, useSelector } from "react-redux";
 import {
   Button,
+  Container,
+  DeleteBtn,
   Description,
   Form,
   Input,
+  LogoutButn,
+  MarkComplete,
+  Navbar,
   SaveBtn,
+  Title,
   TodoCard,
   Wrap,
 } from "@/styles/Todo.styled";
@@ -51,13 +57,15 @@ const Todo = (props) => {
   };
 
   return (
-    <div>
-      <Button $primary onClick={logout}>Logout</Button>
-      <br />
-      <br />
+    <Container>
+      <Navbar>
+        <Title htmlFor="fname">ToDo</Title>
+        <LogoutButn $primary onClick={logout}>
+          Logout
+        </LogoutButn>
+      </Navbar>
+
       <div>
-        <label htmlFor="fname">Todo:</label>
-        <br />
         <Input
           type="text"
           id="todoBody"
@@ -81,24 +89,31 @@ const Todo = (props) => {
               (todo, idx) =>
                 todo.userId === user.uid && (
                   <TodoCard key={idx}>
-                    {todo.isDone && <span>✅</span>}
-                    <Description>{todo.data}</Description>
                     <Wrap>
-                      <Button onClick={() => props.deleteTodo(todo.id)}>
-                        Delete
-                      </Button>
-                      {!todo.isDone && (
-                        <Button onClick={() => props.markAsComplete(todo.id)}>
-                          Mark As Complete
-                        </Button>
-                      )}
+                      <div>
+                        {todo.isDone && <span>✔</span>}
+                        <Description>{todo.data}</Description>
+                      </div>
+                      <Wrap>
+                        {!todo.isDone && (
+                          <MarkComplete
+                            onClick={() => props.markAsComplete(todo.id)}
+                          >
+                            ✅
+                          </MarkComplete>
+                        )}
+                        <DeleteBtn onClick={() => props.deleteTodo(todo.id)}>
+                          {/* Delete */}
+                          <img src="https://img.icons8.com/arcade/32/null/filled-trash.png" />
+                        </DeleteBtn>
+                      </Wrap>
                     </Wrap>
                   </TodoCard>
                 )
             )
         )}
       </div>
-    </div>
+    </Container>
   );
 };
 
