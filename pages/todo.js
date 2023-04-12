@@ -16,6 +16,7 @@ import store, {
   decrement,
   deleteTodo,
   increment,
+  markAsComplete,
   setTodoDetails,
 } from "@/redux";
 import { connect, useDispatch, useSelector } from "react-redux";
@@ -23,15 +24,13 @@ import { connect, useDispatch, useSelector } from "react-redux";
 const todoCollectionRef = collection(db, "todos");
 
 function Todo(props) {
-  const state = useSelector((state) => state);
-  const dispatch = useDispatch();
-
   const [todo, setTodo] = useState({
     data: "",
     createdAt: "",
     userId: "",
     isDone: false,
   });
+
   const [loading, setLoading] = useState(true);
   const [fetchData, setFetchData] = useState([]);
 
@@ -50,14 +49,14 @@ function Todo(props) {
 
   const { logout, user } = useAuth();
 
-  const saveTodo = async (test) => {
-    await addDoc(todoCollectionRef, {
-      data: todo.data,
-      createdAt: timestamp(),
-      userId: user.uid,
-      isDone: false,
-    });
-  };
+  // const saveTodo = async (test) => {
+  //   await addDoc(todoCollectionRef, {
+  //     data: todo.data,
+  //     createdAt: timestamp(),
+  //     userId: user.uid,
+  //     isDone: false,
+  //   });
+  // };
 
   const temp = {
     data: todo.data,
@@ -84,12 +83,6 @@ function Todo(props) {
           value={todo.data}
         />
         <button onClick={() => props.setTodoDetails(temp)}>Save Todo</button>
-        {/* <button onClick={saveTodo} type="button">
-          Save
-        </button> */}
-        {/* <button onClick={fetch} type="button">
-          Fetch
-        </button> */}
       </div>
       <div>
         {loading ? (
@@ -99,9 +92,13 @@ function Todo(props) {
             (item, idx) =>
               item.userId === user.uid && (
                 <div key={idx}>
+                  {item.isDone && <span>CCC</span>}
                   <span>{item.data}</span>
                   <button onClick={() => props.deleteTodo(item.id)}>
                     Delete
+                  </button>
+                  <button onClick={() => props.markAsComplete(item.id)}>
+                    Mark As Complete
                   </button>
                 </div>
               )
@@ -121,6 +118,7 @@ function mapStateToProps(globalState) {
 const mapDispatchToProps = {
   setTodoDetails: setTodoDetails,
   deleteTodo: deleteTodo,
+  markAsComplete: markAsComplete,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todo);

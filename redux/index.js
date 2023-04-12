@@ -17,7 +17,13 @@
 // export default store;
 
 import { db } from "@/src/utils/firebaseConfig";
-import { addDoc, collection, deleteDoc, doc } from "@firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "@firebase/firestore";
 import redux, { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 
@@ -62,6 +68,23 @@ export function deleteTodo(id) {
   };
 }
 
+export function markAsComplete(id) {
+  return async (dispatchEvent) => {
+    try {
+      const docRef = doc(db, "todos", id);
+      await updateDoc(docRef, {
+        isDone: true,
+      });
+      dispatchEvent({
+        type: "MARK_COMPLETED",
+        payload: id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 const todoDetailsReducer = (todo = initialState, action) => {
   switch (action.type) {
     case "SET_TODO_DETAILS":
@@ -75,34 +98,36 @@ const todoDetailsReducer = (todo = initialState, action) => {
       };
     case "DELETE_TODO":
       return action.payload;
+    case "MARK_COMPLETED":
+      return action.payload;
     default:
       return todo;
   }
 };
 
-export function increment() {
-  return (dispatch, getState) => {
-    // const currentCount = getState();
-    dispatch({ type: "INCREMENT" });
-  };
-}
+// export function increment() {
+//   return (dispatch, getState) => {
+//     // const currentCount = getState();
+//     dispatch({ type: "INCREMENT" });
+//   };
+// }
 
-export function decrement() {
-  return {
-    type: "DECREMENT",
-  };
-}
+// export function decrement() {
+//   return {
+//     type: "DECREMENT",
+//   };
+// }
 
-function reducer(count = 0, action) {
-  switch (action.type) {
-    case "INCREMENT":
-      return count + 1;
-    case "DECREMENT":
-      return count - 1;
-    default:
-      return count;
-  }
-}
+// function reducer(count = 0, action) {
+//   switch (action.type) {
+//     case "INCREMENT":
+//       return count + 1;
+//     case "DECREMENT":
+//       return count - 1;
+//     default:
+//       return count;
+//   }
+// }
 
 // const store = createStore(todoDetailsReducer, applyMiddleware(thunk));
 const store = createStore(todoDetailsReducer, applyMiddleware(thunk));
