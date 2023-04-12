@@ -1,29 +1,23 @@
 import { useAuth } from "@/src/context/AuthContext";
 import { fetchTodos, timestamp } from "@/src/utils/functions";
 import { useEffect, useState } from "react";
-import {
-  addDoc,
-  collection,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  updateDoc,
-} from "@firebase/firestore";
+import { collection, onSnapshot } from "@firebase/firestore";
 import { db } from "../src/utils/firebaseConfig";
-import store, {
-  addTodoAction,
-  decrement,
-  deleteTodo,
-  increment,
-  markAsComplete,
-  setTodoDetails,
-} from "@/redux";
+import { deleteTodo, markAsComplete, setTodoDetails } from "@/redux";
 import { connect, useDispatch, useSelector } from "react-redux";
+import {
+  Button,
+  Description,
+  Form,
+  Input,
+  SaveBtn,
+  TodoCard,
+  Wrap,
+} from "@/styles/Todo.styled";
 
 const todoCollectionRef = collection(db, "todos");
 
-function Todo(props) {
+const Todo = (props) => {
   const [todo, setTodo] = useState({
     data: "",
     createdAt: "",
@@ -49,15 +43,6 @@ function Todo(props) {
 
   const { logout, user } = useAuth();
 
-  // const saveTodo = async (test) => {
-  //   await addDoc(todoCollectionRef, {
-  //     data: todo.data,
-  //     createdAt: timestamp(),
-  //     userId: user.uid,
-  //     isDone: false,
-  //   });
-  // };
-
   const temp = {
     data: todo.data,
     createdAt: timestamp(),
@@ -67,13 +52,13 @@ function Todo(props) {
 
   return (
     <div>
-      <button onClick={logout}>Logout</button>
+      <Button onClick={logout}>Logout</Button>
       <br />
       <br />
       <div>
         <label htmlFor="fname">Todo:</label>
         <br />
-        <input
+        <Input
           type="text"
           id="todoBody"
           name="todoBody"
@@ -82,32 +67,40 @@ function Todo(props) {
           }
           value={todo.data}
         />
-        <button onClick={() => props.setTodoDetails(temp)}>Save Todo</button>
+        <Button $primary onClick={() => props.setTodoDetails(temp)}>
+          Save Todo
+        </Button>
       </div>
       <div>
         {loading ? (
           <span>loading...</span>
         ) : (
-          fetchData.map(
-            (item, idx) =>
-              item.userId === user.uid && (
-                <div key={idx}>
-                  {item.isDone && <span>CCC</span>}
-                  <span>{item.data}</span>
-                  <button onClick={() => props.deleteTodo(item.id)}>
-                    Delete
-                  </button>
-                  <button onClick={() => props.markAsComplete(item.id)}>
-                    Mark As Complete
-                  </button>
-                </div>
-              )
-          )
+          fetchData
+            .sort((a, b) => (a.isDone ? -1 : 1))
+            .map(
+              (todo, idx) =>
+                todo.userId === user.uid && (
+                  <TodoCard key={idx}>
+                    {todo.isDone && <span>✅</span>}
+                    <Description>{todo.data}</Description>
+                    <Wrap>
+                      <Button onClick={() => props.deleteTodo(todo.id)}>
+                        Delete
+                      </Button>
+                      {!todo.isDone && (
+                        <Button onClick={() => props.markAsComplete(todo.id)}>
+                          Mark As Complete
+                        </Button>
+                      )}
+                    </Wrap>
+                  </TodoCard>
+                )
+            )
         )}
       </div>
     </div>
   );
-}
+};
 
 function mapStateToProps(globalState) {
   return {
@@ -122,4 +115,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todo);
-// connect(mapStateToProps, mapDispatchToProps)

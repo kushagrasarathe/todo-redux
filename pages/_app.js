@@ -10,16 +10,18 @@ const authReq = ["/todo"];
 export default function App({ Component, pageProps }) {
   const router = useRouter();
   return (
-    <AuthContextProvider>
-      {authReq.includes(router.pathname) ? (
-        <Provider store={store}>
-          <ProtectedRoute>
-            <Component {...pageProps} />
-          </ProtectedRoute>
-        </Provider>
-      ) : (
-        <Component {...pageProps} />
-      )}
-    </AuthContextProvider>
+    <>
+      <AuthContextProvider>
+        {authReq.includes(router.pathname) ? (
+          <Provider store={store}>
+            <ProtectedRoute>
+              <Component {...pageProps} />
+            </ProtectedRoute>
+          </Provider>
+        ) : (
+          <Component {...pageProps} />
+        )}
+      </AuthContextProvider>
+    </>
   );
 }

@@ -104,32 +104,6 @@ const todoDetailsReducer = (todo = initialState, action) => {
       return todo;
   }
 };
-
-// export function increment() {
-//   return (dispatch, getState) => {
-//     // const currentCount = getState();
-//     dispatch({ type: "INCREMENT" });
-//   };
-// }
-
-// export function decrement() {
-//   return {
-//     type: "DECREMENT",
-//   };
-// }
-
-// function reducer(count = 0, action) {
-//   switch (action.type) {
-//     case "INCREMENT":
-//       return count + 1;
-//     case "DECREMENT":
-//       return count - 1;
-//     default:
-//       return count;
-//   }
-// }
-
-// const store = createStore(todoDetailsReducer, applyMiddleware(thunk));
 const store = createStore(todoDetailsReducer, applyMiddleware(thunk));
 store.subscribe(() => console.log(store.getState()));
 export default store;
