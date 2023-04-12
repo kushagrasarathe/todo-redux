@@ -2,7 +2,7 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { Container, LogoutButn, Navbar } from "@/styles/Todo.styled";
-import { Button, Title } from "@/styles/Auth.styled";
+import { Button, SignupButton, Title } from "@/styles/Auth.styled";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +20,7 @@ export default function Home() {
         <div>
           <Link href={"/login"}>Login</Link>
           <Link href={"/signup"}>
-            <Button>Create Account</Button>
+            <SignupButton>Create Account</SignupButton>
           </Link>
         </div>
       </Navbar>
