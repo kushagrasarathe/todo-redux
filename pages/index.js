@@ -25,7 +25,7 @@ export default function Home() {
         </div>
       </Navbar>
       <Container>
-        <h1>Write ToDos and forget to work on them as usual :D</h1>
+        <h1>Create and manage your todo list</h1>
       </Container>
     </>
   );
