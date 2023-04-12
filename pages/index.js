@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import Link from "next/link";
+import { Container, LogoutButn, Navbar } from "@/styles/Todo.styled";
+import { Button, Title } from "@/styles/Auth.styled";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,12 +15,18 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <Navbar>
+        <Title htmlFor="fname">ToDo</Title>
+        <div>
+          <Link href={"/login"}>Login</Link>
+          <Link href={"/signup"}>
+            <Button>Create Account</Button>
+          </Link>
+        </div>
+      </Navbar>
+      <Container>
         <h1>Write ToDos and forget to work on them as usual :D</h1>
-        <Link href={"/login"}>Login</Link>
-        <br />
-        <Link href={"/signup"}>Create Account</Link>
-      </main>
+      </Container>
     </>
   );
 }

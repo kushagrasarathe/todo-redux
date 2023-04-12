@@ -68,6 +68,7 @@ const Todo = (props) => {
       <div>
         <Input
           type="text"
+          placeholder="enter a task"
           id="todoBody"
           name="todoBody"
           onChange={(e) =>
