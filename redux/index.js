@@ -17,7 +17,7 @@
 // export default store;
 
 import { db } from "@/src/utils/firebaseConfig";
-import { addDoc, collection } from "@firebase/firestore";
+import { addDoc, collection, deleteDoc, doc } from "@firebase/firestore";
 import redux, { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 
@@ -37,7 +37,7 @@ export function setTodoDetails(todo) {
     try {
       await addDoc(todoCollectionRef, todo);
       dispatchEvent({
-        type: "SET_USER_DETAILS",
+        type: "SET_TODO_DETAILS",
         payload: todo,
       });
     } catch (error) {
@@ -46,9 +46,25 @@ export function setTodoDetails(todo) {
   };
 }
 
+export function deleteTodo(id) {
+  return async (dispatchEvent) => {
+    try {
+      const docRef = doc(db, "todos", id);
+      await deleteDoc(docRef);
+      dispatchEvent({
+        type: "DELETE_TODO",
+        payload: id,
+      });
+      // console.log("deleted todo");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 const todoDetailsReducer = (todo = initialState, action) => {
   switch (action.type) {
-    case "SET_USER_DETAILS":
+    case "SET_TODO_DETAILS":
       return {
         ...todo,
         // ...action.payload,
@@ -57,6 +73,8 @@ const todoDetailsReducer = (todo = initialState, action) => {
         userId: action.payload.userId,
         isDone: action.payload.isDone,
       };
+    case "DELETE_TODO":
+      return action.payload;
     default:
       return todo;
   }

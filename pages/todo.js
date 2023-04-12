@@ -14,6 +14,7 @@ import { db } from "../src/utils/firebaseConfig";
 import store, {
   addTodoAction,
   decrement,
+  deleteTodo,
   increment,
   setTodoDetails,
 } from "@/redux";
@@ -67,14 +68,6 @@ function Todo(props) {
 
   return (
     <div>
-      {props.user.firstName}
-      <br />
-      <br />
-      <br />
-
-      <button onClick={() => props.setTodoDetails(temp)}>log</button>
-      {/* <button onClick={() => dispatch(increment())}>plus</button>
-      <button onClick={() => dispatch(decrement())}>minus</button> */}
       <button onClick={logout}>Logout</button>
       <br />
       <br />
@@ -90,12 +83,13 @@ function Todo(props) {
           }
           value={todo.data}
         />
-        <button onClick={saveTodo} type="button">
+        <button onClick={() => props.setTodoDetails(temp)}>Save Todo</button>
+        {/* <button onClick={saveTodo} type="button">
           Save
-        </button>
-        <button onClick={fetch} type="button">
+        </button> */}
+        {/* <button onClick={fetch} type="button">
           Fetch
-        </button>
+        </button> */}
       </div>
       <div>
         {loading ? (
@@ -106,6 +100,9 @@ function Todo(props) {
               item.userId === user.uid && (
                 <div key={idx}>
                   <span>{item.data}</span>
+                  <button onClick={() => props.deleteTodo(item.id)}>
+                    Delete
+                  </button>
                 </div>
               )
           )
@@ -117,12 +114,13 @@ function Todo(props) {
 
 function mapStateToProps(globalState) {
   return {
-    user: globalState,
+    todo: globalState,
   };
 }
 
 const mapDispatchToProps = {
   setTodoDetails: setTodoDetails,
+  deleteTodo: deleteTodo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todo);
