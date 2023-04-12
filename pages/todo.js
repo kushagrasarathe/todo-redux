@@ -52,7 +52,7 @@ const Todo = (props) => {
 
   return (
     <div>
-      <Button onClick={logout}>Logout</Button>
+      <Button $primary onClick={logout}>Logout</Button>
       <br />
       <br />
       <div>
