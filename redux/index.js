@@ -16,28 +16,41 @@
 
 // export default store;
 
+import { db } from "@/src/utils/firebaseConfig";
+import { addDoc, collection } from "@firebase/firestore";
 import redux, { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 
-const initialState = {
-  data: "",
-  createdAt: "",
-  userId: "",
-  isDone: false,
-};
+const initialState = [
+  {
+    data: "",
+    createdAt: "",
+    userId: "",
+    isDone: false,
+  },
+];
 
-export function setUserDetails(user) {
-  return {
-    type: "SET_USER_DETAILS",
-    payload: user,
+const todoCollectionRef = collection(db, "todos");
+
+export function setTodoDetails(todo) {
+  return async (dispatchEvent) => {
+    try {
+      await addDoc(todoCollectionRef, todo);
+      dispatchEvent({
+        type: "SET_USER_DETAILS",
+        payload: todo,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 
-const userDetailsReducer = (user = initialState, action) => {
+const todoDetailsReducer = (todo = initialState, action) => {
   switch (action.type) {
     case "SET_USER_DETAILS":
       return {
-        ...user,
+        ...todo,
         // ...action.payload,
         data: action.payload.data,
         createdAt: action.payload.createdAt,
@@ -45,7 +58,7 @@ const userDetailsReducer = (user = initialState, action) => {
         isDone: action.payload.isDone,
       };
     default:
-      return user;
+      return todo;
   }
 };
 
@@ -73,7 +86,7 @@ function reducer(count = 0, action) {
   }
 }
 
-const store = createStore(userDetailsReducer, applyMiddleware(thunk));
-// const store = createStore(reducer, applyMiddleware(thunk));
+// const store = createStore(todoDetailsReducer, applyMiddleware(thunk));
+const store = createStore(todoDetailsReducer, applyMiddleware(thunk));
 store.subscribe(() => console.log(store.getState()));
 export default store;

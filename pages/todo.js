@@ -15,7 +15,7 @@ import store, {
   addTodoAction,
   decrement,
   increment,
-  setUserDetails,
+  setTodoDetails,
 } from "@/redux";
 import { connect, useDispatch, useSelector } from "react-redux";
 
@@ -72,7 +72,7 @@ function Todo(props) {
       <br />
       <br />
 
-      <button onClick={() => props.setUserDetails(temp)}>log</button>
+      <button onClick={() => props.setTodoDetails(temp)}>log</button>
       {/* <button onClick={() => dispatch(increment())}>plus</button>
       <button onClick={() => dispatch(decrement())}>minus</button> */}
       <button onClick={logout}>Logout</button>
@@ -122,7 +122,7 @@ function mapStateToProps(globalState) {
 }
 
 const mapDispatchToProps = {
-  setUserDetails: setUserDetails,
+  setTodoDetails: setTodoDetails,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todo);
