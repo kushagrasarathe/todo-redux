@@ -105,5 +105,5 @@ const todoDetailsReducer = (todo = initialState, action) => {
   }
 };
 const store = createStore(todoDetailsReducer, applyMiddleware(thunk));
-store.subscribe(() => console.log(store.getState()));
+// store.subscribe(() => console.log(store.getState()));
 export default store;

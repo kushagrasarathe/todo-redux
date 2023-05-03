@@ -3,7 +3,6 @@ import { Notify, errorToast, successToast } from "@/src/utils/toast";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { Button, Form, Heading, Input, Wrapper } from "@/styles/Auth.styled";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -28,11 +27,12 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      <Wrapper>
-        <Form>
-          <Heading>Create Account</Heading>
-          <Input
+    <div className="">
+      
+      <div>
+        <div>
+          <div>Create Account</div>
+          <input
             onChange={(e) => {
               setFormData((prevdata) => ({
                 ...prevdata,
@@ -44,7 +44,7 @@ export default function Signup() {
             name="email"
             id="email"
           />
-          <Input
+          <input
             onChange={(e) => {
               setFormData((prevdata) => ({
                 ...prevdata,
@@ -56,9 +56,9 @@ export default function Signup() {
             name="password"
             id="password"
           />
-          <Button onClick={handleSignup}>Create Account</Button>
-        </Form>
-      </Wrapper>
+          <button onClick={handleSignup}>Create Account</button>
+        </div>
+      </div>
 
       {/* <div>
         <label htmlFor="email">

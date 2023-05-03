@@ -5,7 +5,6 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../utils/firebaseConfig";
-import { successToast } from "../utils/toast";
 const { createContext, useContext, useState, useEffect } = require("react");
 
 const AuthContext = createContext({});
@@ -19,7 +18,6 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // console.log(user.uid)
         setUser({
           uid: user.uid,
           email: user.email,

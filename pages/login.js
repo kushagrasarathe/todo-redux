@@ -1,13 +1,5 @@
 import { useAuth } from "@/src/context/AuthContext";
 import { Notify, errorToast, successToast } from "@/src/utils/toast";
-import {
-  Button,
-  Form,
-  GlobalStyle,
-  Heading,
-  Input,
-  Wrapper,
-} from "@/styles/Auth.styled";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -36,10 +28,10 @@ export default function Login() {
 
   return (
     <div>
-      <Wrapper>
-        <Form>
-          <Heading>Login</Heading>
-          <Input
+      <div>
+        <div>
+          <div>Login</div>
+          <input
             onChange={(e) => {
               setFormData((prevdata) => ({
                 ...prevdata,
@@ -51,7 +43,7 @@ export default function Login() {
             name="email"
             id="email"
           />
-          <Input
+          <input
             onChange={(e) => {
               setFormData((prevdata) => ({
                 ...prevdata,
@@ -63,9 +55,9 @@ export default function Login() {
             name="password"
             id="password"
           />
-          <Button onClick={handleLogin}>Login</Button>
-        </Form>
-      </Wrapper>
+          <button onClick={handleLogin}>Login</button>
+        </div>
+      </div>
 
       {/* <div>
         <label htmlFor="email">
